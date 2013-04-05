@@ -1,0 +1,15 @@
+﻿<Window x:Class="S.M.U.G.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="S.M.U.G Login" Height="540.6" Width="732" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FF009999">
+        <Canvas HorizontalAlignment="Left" Height="513" VerticalAlignment="Top" Width="116" Background="#FF1D7373">
+            <Label Content="Login" Canvas.Left="10" Canvas.Top="10" RenderTransformOrigin="0.105,-0.308" Height="71" Width="96" Foreground="White" FontWeight="Bold" FontSize="30"/>
+        </Canvas>
+        <TextBlock HorizontalAlignment="Left" Margin="122,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="117" Width="463" Foreground="#FFF9F9F9" FontSize="16"><Run Text="Smart Multiple Upload Gadget "/><Run Language="en-au" Text="requires access to your SMUG MUG account. This is so that the application is able to Synchronise it's self with your account. When you click the login button you will be taken to the SMUG MUG site and asked for you username and password."/></TextBlock>
+        <WebBrowser HorizontalAlignment="Left" Height="513" Margin="119,0,0,0" Visibility="Hidden"  VerticalAlignment="Top" Width="489" Name="smugwb"/>
+        <Grid HorizontalAlignment="Left" Height="513" Margin="611,0,-1,0" VerticalAlignment="Top" Width="116" Background="#FF33CCCC">
+            <TextBlock HorizontalAlignment="Left" Margin="0,438,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="75" Width="116" Background="#FF5CCCCC" FontSize="16" FontWeight="Bold" Foreground="White"><Run Background="#FF5CCCCC" Language="en-au"/><LineBreak/><Run Background="#FF5CCCCC" Language="en-au" Text="        Login" MouseDown="Run_MouseDown_1"/></TextBlock>
+        </Grid>
+    </Grid>
+</Window>
