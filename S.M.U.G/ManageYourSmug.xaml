@@ -1,0 +1,8 @@
+﻿<Window x:Class="S.M.U.G.ManageYourSmug"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ManageYourSmug" Height="1325.865" Width="570.677">
+    <Grid>
+        
+    </Grid>
+</Window>

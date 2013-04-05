@@ -1,15 +1,19 @@
 ﻿<Window x:Class="S.M.U.G.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="S.M.U.G Login" Height="540.6" Width="732" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid Background="#FF009999">
+        Title="S.M.U.G Login" Height="513.734" Width="732" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid Background="#FF009999" Height="513">
         <Canvas HorizontalAlignment="Left" Height="513" VerticalAlignment="Top" Width="116" Background="#FF1D7373">
             <Label Content="Login" Canvas.Left="10" Canvas.Top="10" RenderTransformOrigin="0.105,-0.308" Height="71" Width="96" Foreground="White" FontWeight="Bold" FontSize="30"/>
         </Canvas>
-        <TextBlock HorizontalAlignment="Left" Margin="122,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="117" Width="463" Foreground="#FFF9F9F9" FontSize="16"><Run Text="Smart Multiple Upload Gadget "/><Run Language="en-au" Text="requires access to your SMUG MUG account. This is so that the application is able to Synchronise it's self with your account. When you click the login button you will be taken to the SMUG MUG site and asked for you username and password."/></TextBlock>
-        <WebBrowser HorizontalAlignment="Left" Height="513" Margin="119,0,0,0" Visibility="Hidden"  VerticalAlignment="Top" Width="489" Name="smugwb"/>
-        <Grid HorizontalAlignment="Left" Height="513" Margin="611,0,-1,0" VerticalAlignment="Top" Width="116" Background="#FF33CCCC">
-            <TextBlock HorizontalAlignment="Left" Margin="0,438,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="75" Width="116" Background="#FF5CCCCC" FontSize="16" FontWeight="Bold" Foreground="White"><Run Background="#FF5CCCCC" Language="en-au"/><LineBreak/><Run Background="#FF5CCCCC" Language="en-au" Text="        Login" MouseDown="Run_MouseDown_1"/></TextBlock>
+        <TextBlock x:Name="Instructions" HorizontalAlignment="Left" Margin="135,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="214" Width="463" Foreground="#FFF9F9F9" FontSize="20" TextAlignment="Center"><Run Text="Smart Multiple Upload Gadget "/><Run Language="en-au" Text="requires access to your SmugMug account. This is so that the application is able to Synchronise it's self with your account. Please enter a username to associate with S.M.U.G and click login. You will be taken to the SmugMug site for authentication."/></TextBlock>
+        <WebBrowser HorizontalAlignment="Left" Height="513" Margin="117,0,0,0"  VerticalAlignment="Top" Width="500" Name="smugwb" Navigated="Smugwb_OnNavigated" Visibility="Hidden" />
+        <Grid HorizontalAlignment="Left" Height="513" Margin="616,0,0,0" VerticalAlignment="Top" Width="116" Background="#FF33CCCC">
+            <TextBlock MouseDown="LoginClick" Name="Login" HorizontalAlignment="Left" Margin="0,438,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="75" Width="116" Background="#FF5CCCCC" FontSize="16" FontWeight="Bold" Foreground="White" TextAlignment="Center"><Run Background="#FF5CCCCC" Language="en-au"/><LineBreak/><Run Background="#FF5CCCCC" Language="en-au" Text="Login"/></TextBlock>
+            <TextBlock MouseDown="ChangeUserClick" Name="changeUser" Visibility="Hidden" HorizontalAlignment="Left" Margin="0,363,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="75" Width="116" Background="#FFC9F76F" FontSize="16" FontWeight="Bold" Foreground="White" TextAlignment="Center"><Run/><LineBreak/><Run Text="Change User"/></TextBlock>
+            <TextBlock MouseDown="NewUserClick" Name="newUser" Visibility="Hidden" HorizontalAlignment="Left" Margin="0,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="75" Width="116" Background="#FFFF7373" FontSize="16" FontWeight="Bold" Foreground="White" TextAlignment="Center"><Run/><LineBreak/><Run Text="New User" /></TextBlock>
         </Grid>
+        <TextBox x:Name="Username" HorizontalAlignment="Left" Height="26" Margin="198,382,0,0" TextWrapping="Wrap" Text="Enter a username here" VerticalAlignment="Top" Width="359" FontSize="16" Background="#FF009999" Foreground="#FFF9F9F9" BorderBrush="#FFF9F9F9" BorderThickness="2" TextAlignment="Center" GotFocus="Username_OnGotFocus" />
+        <TextBlock x:Name="ErrorBox" HorizontalAlignment="Left" Margin="116,440,0,0" TextWrapping="Wrap" Text="Error" VerticalAlignment="Top" Height="73" Width="500" Background="#FFBF3030" FontSize="16" TextAlignment="Center" Foreground="White" Visibility="Hidden"/>
     </Grid>
 </Window>
