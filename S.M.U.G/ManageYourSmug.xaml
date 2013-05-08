@@ -1,8 +1,22 @@
 ﻿<Window x:Class="S.M.U.G.ManageYourSmug"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ManageYourSmug" Height="1325.865" Width="570.677">
+        Title="ManageYourSmug" Height="570.865" Width="887.677">
     <Grid>
-        
+        <StackPanel x:Name="mainContainer" HorizontalAlignment="Left" Height="465" VerticalAlignment="Top" Width="880">
+            <Canvas Height="100" Background="#FF679B00">
+                <Label Content="S.M.U.G Managment" Canvas.Left="10" Canvas.Top="10" RenderTransformOrigin="0.105,-0.308" Height="71" Width="304" Foreground="White" FontWeight="Bold" FontSize="30"/>
+                <Label x:Name="username" Content="UserName" Canvas.Left="230" Canvas.Top="43" Width="131" FontSize="16"/>
+            </Canvas>
+            <StackPanel x:Name="MenuStack" Height="36" Background="#FFB9F73E" Orientation="Horizontal">
+                <Label Content="Local Settings" MouseDown="LocalSettings_OnMouseDown"/>
+                <Label Content="Smugmug Settings" MouseDown="smugmugsettings_OnMouseDown"/>
+                <Label Content="Schedule" MouseDown="schedule_OnMouseDown"/>
+            </StackPanel>
+        </StackPanel>
+        <Canvas HorizontalAlignment="Left" Height="70" Margin="0,470,0,0" VerticalAlignment="Top" Width="880" Background="#FF5CCCCC">
+            <Label Content="S.M.U.G detected and running, chillax." Canvas.Left="241" Canvas.Top="10" Height="50" Width="486" FontSize="24"/>
+        </Canvas>
+
     </Grid>
 </Window>

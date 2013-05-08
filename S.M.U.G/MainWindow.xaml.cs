@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using S.M.U.G.Classes;
 using System.Data.Entity;
 using S.M.U.G.Classes.EF;
+using S.M.U.G.CustomControls;
 
 namespace S.M.U.G
 {
@@ -27,7 +28,7 @@ namespace S.M.U.G
     {
         const string ApiKey = "ptImcZ4sIXVNENb5inyDpeBivcP6FEgB";
         const string Secret = "9ad05e770c6bce11a430fbfafae10396";
-        private bool registered = false;
+        private int registered = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -41,7 +42,7 @@ namespace S.M.U.G
                 {
                     Instructions.Text = String.Format("Welcome back {0} click login to manage you S.M.U.G. If you would like to switch or create a new user select from the options below.", query.FirstOrDefault().UserName);
                     Username.Visibility = Visibility.Hidden;
-                    registered = true;
+                    registered = query.FirstOrDefault().UserId;
                     changeUser.Visibility = Visibility.Visible;
                     newUser.Visibility = Visibility.Visible;
                 }
@@ -50,9 +51,10 @@ namespace S.M.U.G
 
         private void LoginClick(object sender, MouseButtonEventArgs e)
         {
-            if (registered)
+            allUsers.Visibility = Visibility.Hidden;
+            if (registered > 0)
             {
-                new ManageYourSmug().Show();
+                new ManageYourSmug(registered).Show();
                 Close();
             }
             if (Username.Text == "Enter a username here" || Username.Text == "")
@@ -65,8 +67,8 @@ namespace S.M.U.G
             else
             {
                 if (!theUserExists()) { 
-                OAuthHelper oah = new OAuthHelper(ApiKey, Secret);
-                OAuthResponse oar = oah.AcquireRequestToken("http://api.smugmug.com/services/oauth/getRequestToken.mg",
+                var oah = new OAuthHelper(ApiKey, Secret);
+                var oar = oah.AcquireRequestToken("http://api.smugmug.com/services/oauth/getRequestToken.mg",
                                                             "GET");
 
                 string oauthToken = oar["oauth_token"];
@@ -111,15 +113,17 @@ namespace S.M.U.G
         {
             if (SingleTonKen.Instance.AccessTokenResponse != null)
             {
+                var newUserID = 0;
                 using (var db = new SmugContexts())
                 {
                     var newUser = new Muguser { UserName = Username.Text, OAuthToken = SingleTonKen.Instance.AccessTokenResponse};
                     db.Mugusers.Add(newUser);
                     db.SaveChanges();
+                    newUserID = newUser.UserId;
                 }
                 var dt = (DispatcherTimer) sender;
                 dt.Stop();
-                new ManageYourSmug().Show();
+                new ManageYourSmug(newUserID).Show();
                 Close();
             }
         }
@@ -165,7 +169,19 @@ namespace S.M.U.G
 
         private void ChangeUserClick(object sender, MouseButtonEventArgs e)
         {
-            
+            allUsers.Children.Clear();
+            allUsers.Visibility = Visibility.Visible;
+            newUser.Visibility = Visibility.Visible;
+            using (var db = new SmugContexts())
+            {
+                var query = from b in db.Mugusers
+                            orderby b.UserName
+                            select b;
+                foreach (var muguser in query)
+                {
+                    allUsers.Children.Add(new UserTile(muguser.UserName));
+                }
+            }
         }
 
         private void NewUserClick(object sender, MouseButtonEventArgs e)
@@ -173,9 +189,10 @@ namespace S.M.U.G
             Instructions.Text =
                 "Smart Multiple Upload Gadget requires access to your SmugMug account. This is so that the application is able to Synchronise it's self with your account. Please enter a username to associate with S.M.U.G and click login. You will be taken to the SmugMug site for authentication.";
             Username.Visibility = Visibility.Visible;
-            changeUser.Visibility = Visibility.Hidden;
+            changeUser.Visibility = Visibility.Visible;
             newUser.Visibility = Visibility.Hidden;
-            registered = false;
+            allUsers.Visibility = Visibility.Hidden;
+            registered = 0;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace S.M.U.G.Classes.EF
         public string UserName { get; set; }
         public string OAuthToken { get; set; }
         public string OAuthSecret { get; set; }
+        public string SyncFolder { get; set; }
         public virtual List<Gallerys> Gallerys { get; set; }
     }
 }

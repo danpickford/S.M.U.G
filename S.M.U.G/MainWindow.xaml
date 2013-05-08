@@ -15,5 +15,6 @@
         </Grid>
         <TextBox x:Name="Username" HorizontalAlignment="Left" Height="26" Margin="198,382,0,0" TextWrapping="Wrap" Text="Enter a username here" VerticalAlignment="Top" Width="359" FontSize="16" Background="#FF009999" Foreground="#FFF9F9F9" BorderBrush="#FFF9F9F9" BorderThickness="2" TextAlignment="Center" GotFocus="Username_OnGotFocus" />
         <TextBlock x:Name="ErrorBox" HorizontalAlignment="Left" Margin="116,440,0,0" TextWrapping="Wrap" Text="Error" VerticalAlignment="Top" Height="73" Width="500" Background="#FFBF3030" FontSize="16" TextAlignment="Center" Foreground="White" Visibility="Hidden"/>
+        <StackPanel x:Name="allUsers" Visibility="Hidden" HorizontalAlignment="Left" Height="420" Margin="116,0,0,0" VerticalAlignment="Top" Width="500" Background="#FF009999"/>
     </Grid>
 </Window>
