@@ -16,8 +16,8 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using S.M.U.G.Classes;
 using System.Data.Entity;
-using S.M.U.G.Classes.EF;
 using S.M.U.G.CustomControls;
+using SMUGBase;
 
 namespace S.M.U.G
 {

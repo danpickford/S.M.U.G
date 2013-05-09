@@ -80,9 +80,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\EF\SmugContexts.cs" />
-    <Compile Include="Classes\EF\Gallerys.cs" />
-    <Compile Include="Classes\EF\Muguser.cs" />
     <Page Include="CustomControls\LocalSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,15 +118,6 @@
     <Compile Include="ManageYourSmug.xaml.cs">
       <DependentUpon>ManageYourSmug.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201305080823328_InitialCreate.cs" />
-    <Compile Include="Migrations\201305080823328_InitialCreate.Designer.cs">
-      <DependentUpon>201305080823328_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201305081055333_SyncFolderFieldAdded.cs" />
-    <Compile Include="Migrations\201305081055333_SyncFolderFieldAdded.Designer.cs">
-      <DependentUpon>201305081055333_SyncFolderFieldAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -143,12 +131,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201305080823328_InitialCreate.resx">
-      <DependentUpon>201305080823328_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201305081055333_SyncFolderFieldAdded.resx">
-      <DependentUpon>201305081055333_SyncFolderFieldAdded.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -190,6 +172,12 @@
       <ProductName>SQL Server Compact 4.0 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SMUGBase\SMUGBase.csproj">
+      <Project>{c7abb8c3-ea3c-4dca-ab01-bdb07c1f5d5c}</Project>
+      <Name>SMUGBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

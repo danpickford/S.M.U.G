@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace S.M.U.G.Classes.EF
+namespace SMUGBase
 {
-    internal class Muguser
+    public class Muguser
     {
         [Key]
         public int UserId { get; set; }
