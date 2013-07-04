@@ -1,14 +1,14 @@
 ﻿//OAuth Helper written by Daniel Pickford.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
-using System.Web;
-namespace S.M.U.G.Classes
+
+namespace dOhAuth
 {
-    class OAuthHelper
+    public class OAuthHelper
     {
         private readonly Random _random;
         private readonly Dictionary<String, String> _params;

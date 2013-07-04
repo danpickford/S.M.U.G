@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using S.M.U.G.Classes;
-using System.Data.Entity;
 using S.M.U.G.CustomControls;
 using SMUGBase;
+using dOhAuth;
 
 namespace S.M.U.G
 {
@@ -28,33 +19,20 @@ namespace S.M.U.G
     {
         const string ApiKey = "ptImcZ4sIXVNENb5inyDpeBivcP6FEgB";
         const string Secret = "9ad05e770c6bce11a430fbfafae10396";
-        private int registered = 0;
+        private int _registered = 0;
+        private string _curoauthTokenSecret = "";
         public MainWindow()
         {
             InitializeComponent();
-            using (var db = new SmugContexts())
-            {
-                var query = from b in db.Mugusers
-                            orderby b.UserName
-                            select b;
-
-                if (query.FirstOrDefault() != null)
-                {
-                    Instructions.Text = String.Format("Welcome back {0} click login to manage you S.M.U.G. If you would like to switch or create a new user select from the options below.", query.FirstOrDefault().UserName);
-                    Username.Visibility = Visibility.Hidden;
-                    registered = query.FirstOrDefault().UserId;
-                    changeUser.Visibility = Visibility.Visible;
-                    newUser.Visibility = Visibility.Visible;
-                }
-            }
+            setupHomeScreen();
         }
 
         private void LoginClick(object sender, MouseButtonEventArgs e)
         {
             allUsers.Visibility = Visibility.Hidden;
-            if (registered > 0)
+            if (_registered > 0)
             {
-                new ManageYourSmug(registered).Show();
+                new ManageYourSmug(_registered).Show();
                 Close();
             }
             if (Username.Text == "Enter a username here" || Username.Text == "")
@@ -72,7 +50,7 @@ namespace S.M.U.G
                                                             "GET");
 
                 string oauthToken = oar["oauth_token"];
-                string oauthTokenSecret = oar["oauth_token_secret"];
+                _curoauthTokenSecret = oar["oauth_token_secret"];
 
                 smugwb.Visibility = Visibility.Visible;
                 smugwb.Navigate(
@@ -113,17 +91,18 @@ namespace S.M.U.G
         {
             if (SingleTonKen.Instance.AccessTokenResponse != null)
             {
-                var newUserID = 0;
+                int newUserId;
+                var aUser = new Muguser { UserName = Username.Text, OAuthToken = SingleTonKen.Instance.AccessTokenResponse, LoggedUser = 1, OAuthTokenSecret = _curoauthTokenSecret };
                 using (var db = new SmugContexts())
                 {
-                    var newUser = new Muguser { UserName = Username.Text, OAuthToken = SingleTonKen.Instance.AccessTokenResponse};
-                    db.Mugusers.Add(newUser);
+                    db.Mugusers.ToList().ForEach(x => x.LoggedUser = 0);
+                    db.Mugusers.Add(aUser);
                     db.SaveChanges();
-                    newUserID = newUser.UserId;
+                    newUserId = aUser.UserId;
                 }
                 var dt = (DispatcherTimer) sender;
                 dt.Stop();
-                new ManageYourSmug(newUserID).Show();
+                new ManageYourSmug(newUserId).Show();
                 Close();
             }
         }
@@ -179,11 +158,39 @@ namespace S.M.U.G
                             select b;
                 foreach (var muguser in query)
                 {
-                    allUsers.Children.Add(new UserTile(muguser.UserName));
+                    var this_tile = new UserTile(muguser.UserName);
+                    this_tile.UserChanged += UserChangedEvent;
+                    allUsers.Children.Add(this_tile);
                 }
             }
         }
+       
+        private void setupHomeScreen()
+        {
+            allUsers.Children.Clear();
+            allUsers.Visibility = Visibility.Hidden;
+            using (var db = new SmugContexts())
+            {
+                var query = from b in db.Mugusers
+                            where b.LoggedUser == 1
+                            select b;
 
+                if (query.FirstOrDefault() != null)
+                {
+                    Instructions.Text = String.Format("Welcome back {0} click login to manage you S.M.U.G. If you would like to switch or create a new user select from the options below.", query.FirstOrDefault().UserName);
+                    Username.Visibility = Visibility.Hidden;
+                    _registered = query.FirstOrDefault().UserId;
+                    changeUser.Visibility = Visibility.Visible;
+                    newUser.Visibility = Visibility.Visible;
+                }
+            }
+        }
+       
+        public void UserChangedEvent(object sender, EventArgs e)
+        {
+            setupHomeScreen();
+        }
+        
         private void NewUserClick(object sender, MouseButtonEventArgs e)
         {
             Instructions.Text =
@@ -192,7 +199,8 @@ namespace S.M.U.G
             changeUser.Visibility = Visibility.Visible;
             newUser.Visibility = Visibility.Hidden;
             allUsers.Visibility = Visibility.Hidden;
-            registered = 0;
+            _registered = 0;
         }
+
     }
 }

@@ -7,7 +7,7 @@
              d:DesignHeight="70
              " d:DesignWidth="501">
     <Grid Background="#006363">
-        <Label x:Name="UserNameDisplay" Content="UserNameDisplay" Margin="0,0,39,29" VerticalAlignment="Bottom" Foreground="White" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right" Width="414"/>
+        <Label MouseDown="UserNameDisplay_OnMouseDown" x:Name="UserNameDisplay" Content="UserNameDisplay" Margin="0,0,39,29" VerticalAlignment="Bottom" Foreground="White" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right" Width="414" />
 
     </Grid>
 </UserControl>

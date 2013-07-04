@@ -45,6 +45,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gallerys.cs" />
+    <Compile Include="Migrations\201305091026031_InitialCreate.cs" />
+    <Compile Include="Migrations\201305091026031_InitialCreate.Designer.cs">
+      <DependentUpon>201305091026031_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307041155426_addlogged.cs" />
+    <Compile Include="Migrations\201307041155426_addlogged.Designer.cs">
+      <DependentUpon>201307041155426_addlogged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307041401047_remandadd.cs" />
+    <Compile Include="Migrations\201307041401047_remandadd.Designer.cs">
+      <DependentUpon>201307041401047_remandadd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307041407529_addsecret.cs" />
+    <Compile Include="Migrations\201307041407529_addsecret.Designer.cs">
+      <DependentUpon>201307041407529_addsecret.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Muguser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmugContext.cs" />
@@ -52,6 +69,20 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201305091026031_InitialCreate.resx">
+      <DependentUpon>201305091026031_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307041155426_addlogged.resx">
+      <DependentUpon>201307041155426_addlogged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307041401047_remandadd.resx">
+      <DependentUpon>201307041401047_remandadd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307041407529_addsecret.resx">
+      <DependentUpon>201307041407529_addsecret.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
