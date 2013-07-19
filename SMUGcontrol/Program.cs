@@ -40,8 +40,7 @@ namespace SMUGcontrol
                 Console.WriteLine("Tick Tock Y'all");
                 var lastModDir =
                     new DirectoryInfo(LoggedMugUser.SyncFolder).GetDirectories("*", SearchOption.AllDirectories)
-                                               .OrderByDescending(d => d.LastWriteTime)
-                                               .DefaultIfEmpty(new DirectoryInfo(LoggedMugUser.SyncFolder)).First();
+                                               .OrderByDescending(d => d.LastWriteTime).First();
                 Console.WriteLine("LastModded: " + lastModDir);
 
 
@@ -50,13 +49,13 @@ namespace SMUGcontrol
             private void GetAlbumStructFromSM()
             {
                 var oah = new OAuthHelper(ApiKey, Secret, LoggedMugUser.OAuthToken, LoggedMugUser.OAuthTokenSecret);
-                
-                Console.WriteLine(String.Format(
-                    "https://secure.smugmug.com/services/api/json/1.3.0/?method=smugmug.albums.get&oauth_consumer_key={0}&" +
-                    "oauth_signature={1}&oauth_signature_method={2}&oauth_timestamp={3}&oauth_token={4}",
-                    ApiKey, Secret, "HMAC-SHA1", oah.GenerateTimeStamp(), LoggedMugUser.OAuthToken)
-                    );
-            }
+                var _params = new Dictionary<string, string>();
+                var result =
+                    oah.executeFunction("https://api.smugmug.com/services/api/json/1.3.0/?&method=smugmug.albums.get",
+                                        "GET", _params);
+                Console.WriteLine(result);
+
+ }
 
             private Muguser RetrieveMugUser()
             {

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
@@ -127,6 +128,57 @@ namespace dOhAuth
             }
         }
 
+        public OAuthResponse AcquireAccessToken(string uri, string method, string pin)
+        {
+            _params["timestamp"] = GenerateTimeStamp();
+            _params["nonce"] = GenerateNonce();
+            _params["verifier"] = pin;
+
+            var authzHeader = GetAuthorizationHeader(uri, method);
+
+            // prepare the token request
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            request.Headers.Add("Authorization", authzHeader);
+            request.Method = method;
+
+            using (var response = (System.Net.HttpWebResponse)request.GetResponse())
+            {
+                using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    var r = new OAuthResponse(reader.ReadToEnd());
+                    this._params["token"] = r["oauth_token"];
+                    this._params["token_secret"] = r["oauth_token_secret"];
+                    return r;
+                }
+            }
+        }
+
+        public string executeFunction(string uri, string method, Dictionary<String, String> functionParameters)
+        {
+            _params["timestamp"] = GenerateTimeStamp();
+            _params["nonce"] = GenerateNonce();
+            foreach (var functionParameter in functionParameters)
+            {
+                _params[functionParameter.Key] = functionParameter.Value;
+            }
+
+            var authzHeader = GetAuthorizationHeader(uri, method);
+
+            // prepare the token request
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            request.Headers.Add("Authorization", authzHeader);
+            request.Method = method;
+
+            using (var response = (System.Net.HttpWebResponse)request.GetResponse())
+            {
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    var r = (reader.ReadToEnd());
+                    return r;
+                }
+            }
+        }
+
         public string GenerateNonce()
         {
             var sb = new System.Text.StringBuilder();
@@ -154,7 +206,7 @@ namespace dOhAuth
             return Convert.ToInt64(ts.TotalSeconds).ToString();
         }
 
-        private string GetAuthorizationHeader(string uri, string method)
+        public string GetAuthorizationHeader(string uri, string method)
         {
             return GetAuthorizationHeader(uri, method, null);
         }
@@ -173,6 +225,17 @@ namespace dOhAuth
             return (String.IsNullOrEmpty(realm))
                 ? "OAuth " + erp
                 : String.Format("OAuth realm=\"{0}\", ", realm) + erp;
+        }
+
+        public string GetSignature(string uri, string method)
+        {
+            var signatureBase = GetSignatureBase(uri, method);
+            var hash = GetHash();
+
+            byte[] dataBuffer = System.Text.Encoding.ASCII.GetBytes(signatureBase);
+            byte[] hashBytes = hash.ComputeHash(dataBuffer);
+
+            return Convert.ToBase64String(hashBytes);
         }
 
         private void Sign(string uri, string method)

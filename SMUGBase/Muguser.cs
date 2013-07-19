@@ -9,6 +9,7 @@ namespace SMUGBase
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string OAuthToken { get; set; }
+        public string AccessToken { get; set; }
         public string OAuthTokenSecret { get; set; }
         public string SyncFolder { get; set; }
         public int LoggedUser { get; set; }

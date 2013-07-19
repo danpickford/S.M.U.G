@@ -21,6 +21,7 @@ namespace S.M.U.G
         const string Secret = "9ad05e770c6bce11a430fbfafae10396";
         private int _registered = 0;
         private string _curoauthTokenSecret = "";
+        private string _curoauthToken = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -48,15 +49,15 @@ namespace S.M.U.G
                 var oah = new OAuthHelper(ApiKey, Secret);
                 var oar = oah.AcquireRequestToken("http://api.smugmug.com/services/oauth/getRequestToken.mg",
                                                             "GET");
-
-                string oauthToken = oar["oauth_token"];
+                    
+                _curoauthToken = oar["oauth_token"];
                 _curoauthTokenSecret = oar["oauth_token_secret"];
-
+                 
                 smugwb.Visibility = Visibility.Visible;
                 smugwb.Navigate(
                     string.Format(
                         "http://api.smugmug.com/services/oauth/authorize.mg?oauth_token={0}&Access=Full&Permissions=Modify",
-                        oauthToken));
+                        _curoauthToken));
 
                 StartListener();
                 var dispatcherTimer = new DispatcherTimer();
@@ -91,8 +92,16 @@ namespace S.M.U.G
         {
             if (SingleTonKen.Instance.AccessTokenResponse != null)
             {
+                var oah = new OAuthHelper(ApiKey, Secret, _curoauthToken, _curoauthTokenSecret);
+                var oar = oah.AcquireAccessToken("http://api.smugmug.com/services/oauth/getAccessToken.mg", "GET",
+                                                 _curoauthTokenSecret);
+
                 int newUserId;
-                var aUser = new Muguser { UserName = Username.Text, OAuthToken = SingleTonKen.Instance.AccessTokenResponse, LoggedUser = 1, OAuthTokenSecret = _curoauthTokenSecret };
+                var aUser = new Muguser { UserName = Username.Text, OAuthToken = oar["oauth_token"], 
+                                          AccessToken = SingleTonKen.Instance.AccessTokenResponse,
+                                          LoggedUser = 1,
+                                          OAuthTokenSecret = oar["oauth_token_secret"]
+                };
                 using (var db = new SmugContexts())
                 {
                     db.Mugusers.ToList().ForEach(x => x.LoggedUser = 0);
@@ -123,6 +132,8 @@ namespace S.M.U.G
 
             // Obtain a response object.
             HttpListenerResponse response = context.Response;
+
+            Console.WriteLine();
 
             response.Close();
             listener.Close();
