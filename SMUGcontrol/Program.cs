@@ -8,7 +8,7 @@ using System.Timers;
 using SMUGBase;
 using Topshelf;
 using dOhAuth;
-
+using Newtonsoft.Json.Linq;
 namespace SMUGcontrol
 {
     class Program
@@ -30,6 +30,7 @@ namespace SMUGcontrol
                 GetAlbumStructFromSM();
                 _timer = new Timer(10000) { AutoReset = true };
                 _timer.Elapsed += lookAtSmug;
+                
             }
 
             public void Start() { _timer.Start(); }
@@ -53,6 +54,10 @@ namespace SMUGcontrol
                 var result =
                     oah.executeFunction("https://api.smugmug.com/services/api/json/1.3.0/?&method=smugmug.albums.get",
                                         "GET", _params);
+                var jsonObject = JObject.Parse(result);
+                var list = jsonObject["Albums"];
+                var list2 = jsonObject["Albums"].Children();
+                var list3 = jsonObject.SelectToken("Albums").Select(s => (string) s.SelectToken("Title")).ToList();
                 Console.WriteLine(result);
 
  }
