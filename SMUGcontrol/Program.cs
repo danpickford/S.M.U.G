@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using SMUGBase;
+using SMUGDirectoryWorker;
 using Topshelf;
 using dOhAuth;
 using Newtonsoft.Json.Linq;
@@ -17,59 +18,58 @@ namespace SMUGcontrol
         {
             const string ApiKey = "ptImcZ4sIXVNENb5inyDpeBivcP6FEgB";
             const string Secret = "9ad05e770c6bce11a430fbfafae10396";
+            private DirectoryWorker dw;
             readonly Timer _timer;
             protected Muguser LoggedMugUser;
             public SmugSync()
             {
                 Console.WriteLine("SMUG is alive... alive at {0} and all is well", DateTime.Now);
-                LoggedMugUser = RetrieveMugUser();
-                if (LoggedMugUser != null)
+                using (var db = new SmugContexts())
                 {
-                    Console.WriteLine("Directory: " + LoggedMugUser.SyncFolder);
+                    LoggedMugUser = db.RetrieveMugUser();
                 }
-                GetAlbumStructFromSM();
+                Console.WriteLine("Looking up Users SmugDirectory");
+                if (LoggedMugUser == null) Stop();
+                if (LoggedMugUser.SyncFolder == null) Stop();
+                var albumsFromSmugmug = RetrieveAlbumsFromSmugMug();
+                dw = new DirectoryWorker(string.Format("{0}\\SMUG", LoggedMugUser.SyncFolder));
+                dw.CreateSmugMugAlbumStruct(albumsFromSmugmug);
+                using (var db = new SmugContexts())
+                {
+                    db.insertCategoriesAndAlbumsFromJSON(albumsFromSmugmug);
+                }
+
                 _timer = new Timer(10000) { AutoReset = true };
-                _timer.Elapsed += lookAtSmug;
-                
+                _timer.Elapsed += scanForPhotographs;
+
             }
 
             public void Start() { _timer.Start(); }
             public void Stop() { _timer.Stop(); }
 
-            private void lookAtSmug(object sender, EventArgs eventArgs)
+            private void scanForPhotographs(object sender, EventArgs eventArgs)
             {
                 Console.WriteLine("Tick Tock Y'all");
-                var lastModDir =
-                    new DirectoryInfo(LoggedMugUser.SyncFolder).GetDirectories("*", SearchOption.AllDirectories)
-                                               .OrderByDescending(d => d.LastWriteTime).First();
-                Console.WriteLine("LastModded: " + lastModDir);
-
-
+                var newFiles = dw.RecurseDirectories();
+                if (newFiles.Count > 0)
+                {
+                    
+                }
             }
-
-            private void GetAlbumStructFromSM()
+            /// <summary>
+            /// Connect to smugmug and retrieve a list of Albums.
+            /// </summary>
+            private string RetrieveAlbumsFromSmugMug()
             {
                 var oah = new OAuthHelper(ApiKey, Secret, LoggedMugUser.OAuthToken, LoggedMugUser.OAuthTokenSecret);
                 var _params = new Dictionary<string, string>();
+
                 var result =
                     oah.executeFunction("https://api.smugmug.com/services/api/json/1.3.0/?&method=smugmug.albums.get",
                                         "GET", _params);
-                var jsonObject = JObject.Parse(result);
-                var list = jsonObject["Albums"];
-                var list2 = jsonObject["Albums"].Children();
-                var list3 = jsonObject.SelectToken("Albums").Select(s => (string) s.SelectToken("Title")).ToList();
-                Console.WriteLine(result);
-
- }
-
-            private Muguser RetrieveMugUser()
-            {
-                using (var db = new SmugContexts())
-                {
-                    var loggedUser = db.Mugusers.FirstOrDefault(x => x.LoggedUser == 1);
-                    return loggedUser;
-                }
+                return result;
             }
+
         }
         static void Main(string[] args)
         {

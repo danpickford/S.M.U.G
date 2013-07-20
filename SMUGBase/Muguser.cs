@@ -12,6 +12,6 @@ namespace SMUGBase
         public string OAuthTokenSecret { get; set; }
         public string SyncFolder { get; set; }
         public int LoggedUser { get; set; }
-        public virtual List<Gallerys> Gallerys { get; set; }
+        public virtual List<Category> Gallerys { get; set; }
     }
 }

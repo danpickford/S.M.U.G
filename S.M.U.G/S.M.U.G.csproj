@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\UiAnimation.cs" />
     <Compile Include="CustomControls\LocalSettings.xaml.cs">
       <DependentUpon>LocalSettings.xaml</DependentUpon>
     </Compile>

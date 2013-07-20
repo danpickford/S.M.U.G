@@ -33,6 +33,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\SMUGcontrol\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -44,7 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gallerys.cs" />
+    <Compile Include="Album.cs" />
+    <Compile Include="Category.cs" />
     <Compile Include="Migrations\201305091026031_InitialCreate.cs" />
     <Compile Include="Migrations\201305091026031_InitialCreate.Designer.cs">
       <DependentUpon>201305091026031_InitialCreate.cs</DependentUpon>
@@ -68,6 +72,22 @@
     <Compile Include="Migrations\201307200113429_removeAccessToken.cs" />
     <Compile Include="Migrations\201307200113429_removeAccessToken.Designer.cs">
       <DependentUpon>201307200113429_removeAccessToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307200808469_restructureCat.cs" />
+    <Compile Include="Migrations\201307200808469_restructureCat.Designer.cs">
+      <DependentUpon>201307200808469_restructureCat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307200952217_updatedAlbums.cs" />
+    <Compile Include="Migrations\201307200952217_updatedAlbums.Designer.cs">
+      <DependentUpon>201307200952217_updatedAlbums.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307200958465_updateAlbums.cs" />
+    <Compile Include="Migrations\201307200958465_updateAlbums.Designer.cs">
+      <DependentUpon>201307200958465_updateAlbums.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307201008096_updateAlbumsRemoveDupKey.cs" />
+    <Compile Include="Migrations\201307201008096_updateAlbumsRemoveDupKey.Designer.cs">
+      <DependentUpon>201307201008096_updateAlbumsRemoveDupKey.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Muguser.cs" />
@@ -96,6 +116,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307200113429_removeAccessToken.resx">
       <DependentUpon>201307200113429_removeAccessToken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307200808469_restructureCat.resx">
+      <DependentUpon>201307200808469_restructureCat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307200952217_updatedAlbums.resx">
+      <DependentUpon>201307200952217_updatedAlbums.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307200958465_updateAlbums.resx">
+      <DependentUpon>201307200958465_updateAlbums.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307201008096_updateAlbumsRemoveDupKey.resx">
+      <DependentUpon>201307201008096_updateAlbumsRemoveDupKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
