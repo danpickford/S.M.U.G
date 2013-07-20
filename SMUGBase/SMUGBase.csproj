@@ -65,6 +65,10 @@
     <Compile Include="Migrations\201307191114511_AccessToken.Designer.cs">
       <DependentUpon>201307191114511_AccessToken.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201307200113429_removeAccessToken.cs" />
+    <Compile Include="Migrations\201307200113429_removeAccessToken.Designer.cs">
+      <DependentUpon>201307200113429_removeAccessToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Muguser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +93,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307191114511_AccessToken.resx">
       <DependentUpon>201307191114511_AccessToken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307200113429_removeAccessToken.resx">
+      <DependentUpon>201307200113429_removeAccessToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

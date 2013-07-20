@@ -29,7 +29,7 @@ namespace S.M.U.G
                 }
                 else
                 {
-                    username.Content = "Err dude i'm broken. Call tech support or something.";
+                    username.Content = "O dear I'm broken. Call tech support or something.";
                 }
             }
         }
